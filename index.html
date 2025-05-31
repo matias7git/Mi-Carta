@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sobre con Carta</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #ffc5d3;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .emoji {
+      position: absolute;
+      font-size: 2rem;
+      animation: float 10s linear forwards;
+      opacity: 1;
+      white-space: nowrap;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120vh);
+        opacity: 0;
+      }
+    }
+
+    .sobre-container {
+      position: relative;
+      z-index: 10;
+    }
+
+    .sobre-img {
+      width: 450px;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.4s ease;
+      display: block;
+    }
+
+    .sobre-img:hover {
+      transform: scale(1.05);
+    }
+
+    .corazon-centro {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      pointer-events: none;
+      z-index: 11;
+    }
+
+    .carta-completa {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #fff;
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      animation: aparecer 0.8s ease forwards;
+      padding: 20px;
+    }
+
+    .carta-completa.mostrar {
+      display: flex;
+    }
+
+    .boton-cerrar {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 200;
+      color: #333;
+    }
+
+    .carta-completa h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .carta-completa p {
+      max-width: 700px;
+      font-size: 1.3rem;
+      margin: 10px 0;
+    }
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fondo animado de emojis y texto -->
+  <div class="background" id="emojiBackground"></div>
+
+  <!-- Contenedor del sobre con corazón encima -->
+  <div class="sobre-container">
+    <img 
+      src="https://i.imgur.com/LF2tfq9.png"
+      alt="Sobre"
+      class="sobre-img"
+      id="sobreImg"
+    />
+    <div class="corazon-centro">❤️</div>
+  </div>
+
+  <!-- Carta en pantalla completa -->
+  <div class="carta-completa" id="cartaCompleta">
+    <button class="boton-cerrar" onclick="cerrarCarta()">❌</button>
+    <h1>Querido lector:</h1>
+    <p>Esta carta se abre al tocar el sobre. ¡Feliz día! 💌</p>
+    <p style="margin-top: 20px;">Con cariño,<br>Tu desarrollador 🌷</p>
+  </div>
+
+  <script>
+    const sobreImg = document.getElementById('sobreImg');
+    const carta = document.getElementById('cartaCompleta');
+    const corazon = document.querySelector('.corazon-centro');
+
+    sobreImg.addEventListener('click', () => {
+      sobreImg.style.display = 'none';
+      corazon.style.display = 'none';
+      carta.classList.add('mostrar');
+    });
+
+    function cerrarCarta() {
+      carta.classList.remove('mostrar');
+      sobreImg.style.display = 'block';
+      corazon.style.display = 'block';
+    }
+
+    // Emojis y palabras flotantes
+    const emojis = [
+      "❤️", "🧡", "💛", "💚", "💙", "💜", "🩷", "🌷", "💘", "💕", "💞", "TE AMO", "🐑"
+    ];
+
+    const background = document.getElementById("emojiBackground");
+
+    function createEmoji() {
+      const count = 4;
+      for (let i = 0; i < count; i++) {
+        const emoji = document.createElement("div");
+        emoji.classList.add("emoji");
+
+        const content = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.innerText = content;
+
+        emoji.style.left = Math.random() * 100 + "vw";
+        emoji.style.fontSize = (Math.random() * 1.5 + 1) + "rem";
+        emoji.style.animationDuration = (Math.random() * 5 + 6) + "s";
+        emoji.style.color = "#" + Math.floor(Math.random()*16777215).toString(16);
+
+        background.appendChild(emoji);
+        setTimeout(() => emoji.remove(), 12000);
+      }
+    }
+
+    setInterval(createEmoji, 200);
+  </script>
+
+</body>
+</html>
